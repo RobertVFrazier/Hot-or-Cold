@@ -3,7 +3,6 @@ import classNames from "classnames";
 
 import Instructions from "./instructions";
 import Input from "./input";
-// import Reset from "./reset";
 import "./game.css";
 
 function Reset(props) {
@@ -14,13 +13,16 @@ function Reset(props) {
       "New target number selected. Make your guess."
     );
   }
-  return <button onClick={onButtonClicked}>New Game</button>;
+  return (
+    <button className="btn-reset" onClick={onButtonClicked}>
+      New Game
+    </button>
+  );
 }
 
 export default class Game extends React.Component {
   constructor() {
     super();
-    // this.refInput=React.createRef();
     this.state = {
       target: Math.floor(Math.random() * 100) + 1,
       guesses: [],
@@ -59,9 +61,9 @@ export default class Game extends React.Component {
       } else if (distance >= 46 && distance <= 50) {
         feedback = "Slightly warm";
       } else if (distance >= 41 && distance <= 45) {
-        feedback = "Rather heated";
-      } else if (distance >= 36 && distance <= 40) {
         feedback = "Summer breeze";
+      } else if (distance >= 36 && distance <= 40) {
+        feedback = "Rather heated";
       } else if (distance >= 31 && distance <= 35) {
         feedback = "Desert wind";
       } else if (distance >= 26 && distance <= 30) {

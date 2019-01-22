@@ -22,7 +22,7 @@ export default class Instructions extends React.Component {
     if (!this.state.instructionsButtonClicked) {
       return (
         <Button
-          className="instr"
+          className="btn-instr"
           handleButtonClick={this.click}
           buttonText="Instructions"
         />

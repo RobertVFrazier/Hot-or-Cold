@@ -15,7 +15,14 @@ export default class Input extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input ref={this.inputGuess} type="number" min="1" max="100" required />
+        <input
+          ref={this.inputGuess}
+          name="guess"
+          type="number"
+          min="1"
+          max="100"
+          required
+        />
         <button>Guess</button>
       </form>
     );

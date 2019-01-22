@@ -10,7 +10,7 @@ describe("<Instructions />", () => {
   });
 
   it("shows instructions and shows `Understood` button on first click", () => {
-    instruct.find('[buttonText="Instructions"]').simulate("click");
+    instruct.find(".btn-instr").simulate("click");
     expect(instruct.state().instructionsButtonClicked).toEqual(true);
     expect(instruct.type()).toEqual(Instructions);
   });
