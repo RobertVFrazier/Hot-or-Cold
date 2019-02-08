@@ -10,7 +10,7 @@ function Reset(props) {
     props.handleClick(
       Math.floor(Math.random() * 100) + 1,
       [],
-      "New target number selected. Make your guess."
+      "New target number selected. Make your guess. "
     );
   }
   return (
