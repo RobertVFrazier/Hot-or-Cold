@@ -1,0 +1,3 @@
+export const UPDATE_FEEDBACK = "UPDATE_FEEDBACK";
+export const GENERATE_NUMBER = "GENERATE_NUMBER";
+export const ADD_GUESS = "ADD_GUESS";
