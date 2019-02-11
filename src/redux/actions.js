@@ -19,3 +19,9 @@ export const addGuess = guess => {
     guess
   };
 };
+
+export const newGame = () => {
+  return {
+    type: constants.NEW_GAME
+  };
+};

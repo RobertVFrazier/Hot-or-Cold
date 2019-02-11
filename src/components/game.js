@@ -1,17 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
 import classNames from "classnames";
 
+import * as actions from "../redux/actions";
 import Instructions from "./instructions";
 import Input from "./input";
 import "./game.css";
 
 function Reset(props) {
   function onButtonClicked() {
-    props.handleClick(
-      Math.floor(Math.random() * 100) + 1,
-      [],
-      "New target number selected. Make your guess. "
-    );
+    props.handleClick();
   }
   return (
     <button className="btn-reset" onClick={onButtonClicked}>
@@ -20,23 +18,16 @@ function Reset(props) {
   );
 }
 
-export default class Game extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      target: Math.floor(Math.random() * 100) + 1,
-      guesses: [],
-      feedback: "Make your guess. The history of your moves will appear below."
-    };
-  }
-
+class Game extends React.Component {
   handleFormSubmit = value => {
+    let guesses = this.props.guesses;
+    let target = this.props.target;
     let priorGuesses = [];
-    for (let i = 0; i < this.state.guesses.length; i++) {
-      priorGuesses.push(this.state.guesses[i].number);
+    for (let i = 0; i < guesses.length; i++) {
+      priorGuesses.push(guesses[i].number);
     }
     if (priorGuesses.indexOf(parseInt(value)) === -1) {
-      let distance = Math.abs(this.state.target - value);
+      let distance = Math.abs(target - value);
       let feedback = "";
       if (distance >= 96) {
         feedback = "Oxygen freezes";
@@ -87,20 +78,20 @@ export default class Game extends React.Component {
       } else if (distance === 1) {
         feedback = "Supernova explosion!";
       } else if (distance === 0) {
-        let guessCount = this.state.guesses.length + 1;
+        let guessCount = guesses.length + 1;
         let plural = guessCount > 1 ? "s" : "";
         feedback =
           "You WON! You did it in " + guessCount + " move" + plural + ".";
       }
-      this.setState(state => {
-        state.guesses.push({
+
+      this.props.dispatch(
+        actions.addGuess({
           id: Math.random(),
           number: parseInt(value, 10),
           distance: distance
-        });
-        state.feedback = feedback;
-        return state;
-      });
+        })
+      );
+      this.props.dispatch(actions.updateFeedback(feedback));
     } else {
       this.setState({ feedback: `You already guessed ${value}!` });
       setTimeout(
@@ -113,12 +104,12 @@ export default class Game extends React.Component {
     }
   };
 
-  handleClick = (target, list, feedback) => {
-    this.setState({ target, guesses: list, feedback });
+  handleClick = () => {
+    this.props.dispatch(actions.newGame());
   };
 
   render() {
-    const guessHistory = this.state.guesses.map(guess => {
+    const guessHistory = this.props.guesses.map(guess => {
       const className = classNames("guess-box", {
         "guess-box--cold-9": guess.distance >= 96,
         "guess-box--cold-8": guess.distance >= 91 && guess.distance <= 95,
@@ -159,10 +150,21 @@ export default class Game extends React.Component {
         <h1>Hot or Cold</h1>
         <Instructions />
         <Input handleFormSubmit={this.handleFormSubmit} />
-        <h3>{this.state.feedback}</h3>
+        <h3>{this.props.feedback}</h3>
         <div className="history">{guessHistory}</div>
         <Reset handleClick={this.handleClick} />
       </>
     );
   }
 }
+
+const mapStateToProps = state => {
+  // console.log(state);
+  return {
+    target: state.target,
+    guesses: state.guesses,
+    feedback: state.feedback
+  };
+};
+
+export default connect(mapStateToProps)(Game);
