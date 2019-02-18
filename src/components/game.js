@@ -18,7 +18,7 @@ function Reset(props) {
   );
 }
 
-class Game extends React.Component {
+export class Game extends React.Component {
   handleFormSubmit = value => {
     let guesses = this.props.guesses;
     let target = this.props.target;
@@ -159,7 +159,7 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state);
+  console.log(state);
   return {
     target: state.target,
     guesses: state.guesses,
